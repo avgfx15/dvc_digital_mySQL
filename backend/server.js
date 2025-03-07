@@ -8,11 +8,20 @@ import morgan from "morgan";
 // | import dotenv
 import dotenv from "dotenv";
 
+// | import cors
+import cors from "cors";
+
 // | import Database base Connection dbConnect
 import { dbConnect } from "./config/dbConnect.js";
 
 // | import console.log Style With chalk
 import { successLog, errorLog, infoLog } from "./utility/stylistLog.js";
+
+// | import authRoute
+import authRoute from "./routes/authRoutes.js";
+
+// | import errorHandler
+import { errorHandlerMiddleware } from "./utility/errorHandlerMiddleware.js";
 
 // ` dotenv configure
 dotenv.config();
@@ -23,15 +32,27 @@ const app = express();
 // @ Port variable
 const port = process.env.PORT || 3000;
 
-// ~ morgan middleware
+// ` JSON data
+app.use(express.json());
+
+// ` cors configure
+app.use(cors());
+
+// ` morgan middleware
 app.use(
   morgan(
     ":date[web] :method :url :status :res[content-length] - :response-time ms"
   )
 );
 
+// ` Routes Configure
+app.use("/api/v1/auth", authRoute);
+
 // ` default api
 app.get("/", (req, res) => res.send("Hello World!"));
+
+// ` ErrorHandler configure
+app.use(errorHandlerMiddleware);
 
 // % app listen function
 app.listen(port, () => {
