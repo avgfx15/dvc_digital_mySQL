@@ -11,9 +11,6 @@ import dotenv from "dotenv";
 // | import cors
 import cors from "cors";
 
-// | import Database base Connection dbConnect
-import { dbConnect } from "./config/dbConnect.js";
-
 // | import console.log Style With chalk
 import { successLog, errorLog, infoLog } from "./utility/stylistLog.js";
 
@@ -56,11 +53,6 @@ app.use(errorHandlerMiddleware);
 
 // % app listen function
 app.listen(port, () => {
-  dbConnect.connect(function (err) {
-    if (err) throw err;
-    else {
-      infoLog("Database Connected Successfully!");
-    }
-    successLog(`Example app listening on port ${port}!`);
-  });
+  successLog(`Example app listening on port ${port}!`);
 });
+// });
